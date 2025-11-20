@@ -1,6 +1,6 @@
 
 # EX 5B Topological Sort - Khan's Algorithm
-## DATE:
+## DATE: 16-11-2025
 ## AIM:
 To write a Java program to for given constraints.
 Problem Description:
@@ -27,23 +27,91 @@ If not, print "Release cannot be scheduled".
 <img width="341" height="363" alt="image" src="https://github.com/user-attachments/assets/f0355541-4f66-49da-bcd3-171a799a7c1f" />
 
 ## Algorithm
-1. 
-2. 
-3. 
-4.  
-5.   
+1. Read the number of tasks and dependencies, and store all prerequisite pairs.  
+2. Build an adjacency list graph and compute indegree for each task.  
+3. Insert all tasks with indegree 0 into a queue.  
+4. Process the queue by appending tasks to the order and reducing indegrees of dependent tasks.  
+5. If all tasks are included in the order, print it; otherwise output that the release cannot be scheduled.  
+
+#### Developed By: Mohamed Hameem Sajith J
+#### Register Number: 212223240090
 
 ## Program:
-```
-/*
-Program to implement Reverse a String
-Developed by: 
-Register Number:  
-*/
+```java
+import java.util.*;
+
+public class prog {
+
+    public static List<Integer> findTaskOrder(int n, int[][] dependencies) {
+        List<Integer> order = new ArrayList<>();
+        List<List<Integer>> graph = new ArrayList<>();
+        int[] indegree = new int[n];
+        
+
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        
+
+        for (int[] dep : dependencies) {
+            graph.get(dep[1]).add(dep[0]);
+            indegree[dep[0]]++;  
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        while (!q.isEmpty()) {  
+            int curr = q.poll();
+            order.add(curr);
+            
+            for (int neighbour : graph.get(curr)) {
+                indegree[neighbour]--; 
+                if (indegree[neighbour] == 0) {
+                    q.offer(neighbour);
+                }
+            }
+        }
+        
+
+        if (order.size() != n) {
+            return null;
+        }
+
+        return order;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // number of tasks
+        int m = sc.nextInt(); // number of dependencies
+
+        int[][] dependencies = new int[m][2];
+        for (int i = 0; i < m; i++) {
+            dependencies[i][0] = sc.nextInt(); // task
+            dependencies[i][1] = sc.nextInt(); // prerequisite
+        }
+
+        List<Integer> result = findTaskOrder(n, dependencies);
+
+        if (result == null) {
+            System.out.println("Release cannot be scheduled");
+        } else {
+            for (int task : result) {
+                System.out.print(task + " ");
+            }
+        }
+    }
+}
 ```
 
 ## Output:
 
+<img width="697" height="536" alt="image" src="https://github.com/user-attachments/assets/dce883cb-ca01-4ecd-9313-8920c4e9bee9" />
 
 
 ## Result:
